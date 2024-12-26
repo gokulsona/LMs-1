@@ -5,6 +5,13 @@
 {% block title %}{{ course.title }}{% endblock title %}
 
 {% block content %}
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
 
 <section class="">
     {% comment %} <h1>{{ course.title }}</h1>
@@ -124,6 +131,7 @@
               Your browser does not support the video tag.
             </video>
             <p style='margin-top: 1rem; font-weight: 600;'>{{course.lesson_title}}</p>
+            <a class='btn' href="{% url 'full_course' course.instructor course.slug %}" style='display: block; text-align: center; width: 100%'>View Full Course</a>
           </div>
           {% else %}
           <h2>Unlock this course</h2>
@@ -156,10 +164,11 @@
         </div>
       </div>
       {% if enrolled %}
+
       <a class='btn' href="#start-learning" style='display: block; text-align: center; width: 100%'>Access Course</a>
       {% else %}
       {% if user.is_authenticated %}
-      <form method="post" action="{% url 'course_details' instructor=course.instructor.username slug=course.slug %}">
+      <form method="post" action="{% url 'payment' instructor=course.instructor.username slug=course.slug %}">
       {% csrf_token %}
       <button type="submit" style='width: 100%'>Enroll in this Course</button>
       </form>

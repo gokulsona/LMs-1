@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}{{ course.title }}{% endblock title %}
+
+{% block content %}
+<head>  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Gateway</title>
+    <style>
+        body {  
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg,rgb(139, 241, 161),rgb(149, 240, 176));
+            color: #333;
+            display: flex;  
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .payment-container {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 20px 30px;
+            width: 400px;
+        }
+
+        .payment-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #4caf50;
+        }
+
+        .payment-option {
+            margin-bottom: 15px;
+        }
+
+        .payment-option label {
+            font-size: 16px;
+            margin-left: 10px;
+        }
+
+        .payment-button {
+            background: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: background 0.3s ease;
+        }
+
+        .payment-button:hover {
+            background: #45a049;
+        }
+
+        .input-field {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+        }
+
+        .input-field label {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .input-field input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .radio-group input {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="payment-container">
+        <h2>Payment Gateway</h2>
+        <form action="{% url 'course_details' instructor=course.instructor.username slug=course.slug %}" method="POST">
+            {% csrf_token %}
+            
+            <div class="input-field">
+                <label for="name">Name on Card</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name" required>
+            </div>
+            <div class="input-field">
+                <label for="card-number">Card Number</label>
+                <input type="text" id="card-number" name="card-number" placeholder="XXXX-XXXX-XXXX-XXXX" required>
+            </div>
+            <div class="input-field">
+                <label for="expiry">Expiry Date</label>
+                <input type="month" id="expiry" name="expiry" required>
+            </div>
+            <div class="input-field">
+                <label for="cvv">CVV</label>
+                <input type="password" id="cvv" name="cvv" placeholder="Enter CVV" required>
+            </div>
+            <div class="payment-option">
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="payment-method" value="upi" required>
+                        UPI Payment
+                    </label>
+                    <label>
+                        <input type="radio" name="payment-method" value="net-banking">
+                        Net Banking
+                    </label>
+                    <label>
+                        <input type="radio" name="payment-method" value="credit-card">
+                        Credit Card / MasterCard
+                    </label>
+                </div>
+            </div>
+            
+            
+            
+            
+             <button type="submit" class="payment-button">Proceed to Pay</button></a>
+             <br>
+            
+         
+        </form>
+    </div>
+{% endblock content %}

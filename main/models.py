@@ -6,6 +6,7 @@ from django.utils.text import slugify
 
 from django.contrib.auth.models import User
 
+import uuid
 # Create your models here.
 
 class library(models.Model):
@@ -47,8 +48,12 @@ class Course(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)
+        if not self.slug:  # Generate slug only if it's not provided
+            self.slug = slugify(self.title)
+            while Course.objects.filter(slug=self.slug).exists():
+                self.slug = f"{slugify(self.title)}-{uuid.uuid4().hex[:6]}"
         super().save(*args, **kwargs)
+ 
 
     def get_instructor_username(self):
         return self.instructor.username

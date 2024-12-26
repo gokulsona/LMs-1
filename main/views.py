@@ -112,7 +112,63 @@ def courses_uploaded(request):
     courses = Course.objects.filter(instructor=request.user)
     return render(request, 'dashboard/courses-uploaded.html', {'courses': courses})
 
-@login_required
+# @login_required
+# def upload(request):
+#     if request.method == 'POST':
+#         # Get course details from the form
+#         title = request.POST['title']
+#         description = request.POST['description']
+#         thumbnail = request.FILES['thumbnail']
+#         featured_video = request.FILES['featured_video']
+#         instructor = request.user
+#         duration = request.POST['duration']
+#         level = request.POST['level']
+#         requirements = request.POST['requirements']
+#         content = request.POST['content']
+#         category = request.POST['category']
+#         price = int(request.POST['price'])
+#         discount = int(request.POST['discount'])
+
+#         lesson_title = request.POST['lesson_title']
+#         lesson_video = request.FILES['lesson_video']
+
+#         discounted_price = (discount/100)*price
+#         price = price-discounted_price
+
+#         # Split requirements and content into lists
+#         requirements_list = [r.strip() for r in requirements.split(', ')]
+#         content_list = [c.strip() for c in content.split(', ')]
+
+#         # Upload thumbnail and featured video to Cloudinary
+#         thumbnail_upload = cloudinary.uploader.upload(thumbnail)
+#         featured_video_upload = cloudinary.uploader.upload(
+#             featured_video, resource_type="video")
+
+#         # Upload lesson videos to Cloudinary
+#         lesson_video_upload = cloudinary.uploader.upload(
+#             lesson_video, resource_type="video")
+
+#         # Create a new Course object with the given details
+#         course = Course(
+#             title=title,
+#             description=description,
+#             thumbnail=thumbnail_upload['secure_url'],
+#             featured_video=featured_video_upload['secure_url'],
+#             instructor=instructor,
+#             duration=duration,
+#             level=level,
+#             requirements=requirements_list,
+#             content=content_list,
+#             category=category,
+#             price=price,
+#             discount=discount,
+#             lesson_title=lesson_title,
+#             lesson_video=lesson_video_upload['secure_url'],
+#             )
+#         course.save()
+
+#     return render(request, 'dashboard/upload.html')
+
 def upload(request):
     if request.method == 'POST':
         # Get course details from the form
@@ -132,21 +188,17 @@ def upload(request):
         lesson_title = request.POST['lesson_title']
         lesson_video = request.FILES['lesson_video']
 
-        discounted_price = (discount/100)*price
-        price = price-discounted_price
+        discounted_price = (discount / 100) * price
+        price -= discounted_price
 
         # Split requirements and content into lists
         requirements_list = [r.strip() for r in requirements.split(', ')]
         content_list = [c.strip() for c in content.split(', ')]
 
-        # Upload thumbnail and featured video to Cloudinary
+        # Upload files to Cloudinary
         thumbnail_upload = cloudinary.uploader.upload(thumbnail)
-        featured_video_upload = cloudinary.uploader.upload(
-            featured_video, resource_type="video")
-
-        # Upload lesson videos to Cloudinary
-        lesson_video_upload = cloudinary.uploader.upload(
-            lesson_video, resource_type="video")
+        featured_video_upload = cloudinary.uploader.upload(featured_video, resource_type="video")
+        lesson_video_upload = cloudinary.uploader.upload(lesson_video, resource_type="video")
 
         # Create a new Course object with the given details
         course = Course(
@@ -157,14 +209,14 @@ def upload(request):
             instructor=instructor,
             duration=duration,
             level=level,
-            requirements=requirements_list,
-            content=content_list,
+            requirements=", ".join(requirements_list),  # Save as a string in DB
+            content=", ".join(content_list),  # Save as a string in DB
             category=category,
             price=price,
             discount=discount,
             lesson_title=lesson_title,
             lesson_video=lesson_video_upload['secure_url'],
-            )
+        )
         course.save()
 
     return render(request, 'dashboard/upload.html')
@@ -181,6 +233,7 @@ def upload(request):
 def course_details(request, instructor, slug):
     instructor_obj = get_object_or_404(User, username=instructor)
     course = get_object_or_404(Course, slug=slug, instructor=instructor_obj)
+    
     category_courses = Course.objects.filter(category__iexact=course.category).exclude(id=course.id)[:3]
 
     enrolled = False
@@ -199,9 +252,30 @@ def course_details(request, instructor, slug):
     context = {
         'course': course,
         'enrolled': enrolled,
-        'category_courses': category_courses
+        'category_courses': category_courses,
+       
+        
     }
     return render(request, 'course.html', context)
+
+
+def payment(request, instructor, slug):
+    # if request.method == 'POST':
+    #    return redirect('course_details', instructor=instructor, slug=slug)
+    instructor_obj = get_object_or_404(User, username=instructor)
+    course = get_object_or_404(Course, slug=slug, instructor=instructor_obj)
+    context={
+        'course':course,
+        'instructor':instructor,
+        'slug':slug,
+       
+    }
+    
+    
+    return render(request, 'payment.html', context)
+
+
+
 
 @login_required
 def course_edit(request, slug):
@@ -232,3 +306,9 @@ def category(request, category):
         'courses': courses
     }
     return render(request, 'category.html', context)
+
+def full_course(request,instructor, slug):
+    instructor_obj = get_object_or_404(User, username=instructor)
+    course = get_object_or_404(Course, slug=slug, instructor=instructor_obj)
+    
+    return render(request, 'full_course.html', {'course':course})

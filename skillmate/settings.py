@@ -28,9 +28,10 @@ import cloudinary.api
 SECRET_KEY = 'django-insecure-&dgr^x)^#^jnys&p9g7djz&vd$1##vz3(c@1fbb3!c6yd^#f-#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["skillmate.up.railway.app"]
+ALLOWED_HOSTS=['*']
+#ALLOWED_HOSTS = ["skillmate.up.railway.app"]
 
 CSRF_TRUSTED_ORIGINS = ['https://skillmate.up.railway.app']
 
@@ -181,6 +182,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
+# MEDIA_URL = '/media/'  # URL to access media files
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATIC_URL = 'static/'
 
@@ -197,20 +200,20 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-DEFAULT_FROM_EMAIL = 'dev.ash.py@gmail.com'
+DEFAULT_FROM_EMAIL = 'lawsystem2024@gmail.com'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'dev.ash.py@gmail.com'
-EMAIL_HOST_PASSWORD = 'Dev.2023'
+EMAIL_HOST_USER = 'lawsystem2024@gmail.com'
+EMAIL_HOST_PASSWORD = 'fqbdrxyncaedqapb'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_PASSWORD = 'hfqnovljglydjjej'
+
 
 # Cloudinary Django Integration
 
 cloudinary.config (
-    cloud_name = 'dw7whhgws',
-    api_key = '277146194325425',
-    api_secret = 'Z4Y0f8yvo7lRkK2Is1yaOLcJJeo',
+    cloud_name = 'dkr3u8o20',
+    api_key = '853126626135418',
+    api_secret = 'eUoYHSL-b7HI12vcdl_u7uCNQco',
 )
