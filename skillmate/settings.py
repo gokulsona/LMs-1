@@ -200,14 +200,15 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-DEFAULT_FROM_EMAIL = 'lawsystem2024@gmail.com'
+DEFAULT_FROM_EMAIL = 'skillmate25@gmail.com'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'lawsystem2024@gmail.com'
-EMAIL_HOST_PASSWORD = 'fqbdrxyncaedqapb'
+EMAIL_HOST_USER = 'skillmate25@gmail.com'
+EMAIL_HOST_PASSWORD = 'awyuzjbrohoxduak'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
 
 
 # Cloudinary Django Integration
